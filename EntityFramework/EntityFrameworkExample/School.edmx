@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SchoolDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TB_CLASSES">
+          <Key>
+            <PropertyRef Name="Class_Id" />
+          </Key>
+          <Property Name="Class_Id" Type="int" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="255" />
+          <Property Name="Description" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="TB_ENROLLMENTS">
+          <Key>
+            <PropertyRef Name="Enrollment_Id" />
+          </Key>
+          <Property Name="Enrollment_Id" Type="int" Nullable="false" />
+          <Property Name="Student_Id" Type="int" />
+          <Property Name="Class_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="TB_STUDENTS">
+          <Key>
+            <PropertyRef Name="Student_Id" />
+          </Key>
+          <Property Name="Student_Id" Type="int" Nullable="false" />
+          <Property Name="Last_Name" Type="varchar" MaxLength="255" />
+          <Property Name="First_Name" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <Association Name="FK_Class">
+          <End Role="TB_CLASSES" Type="Self.TB_CLASSES" Multiplicity="0..1" />
+          <End Role="TB_ENROLLMENTS" Type="Self.TB_ENROLLMENTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_CLASSES">
+              <PropertyRef Name="Class_Id" />
+            </Principal>
+            <Dependent Role="TB_ENROLLMENTS">
+              <PropertyRef Name="Class_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student">
+          <End Role="TB_STUDENTS" Type="Self.TB_STUDENTS" Multiplicity="0..1" />
+          <End Role="TB_ENROLLMENTS" Type="Self.TB_ENROLLMENTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_STUDENTS">
+              <PropertyRef Name="Student_Id" />
+            </Principal>
+            <Dependent Role="TB_ENROLLMENTS">
+              <PropertyRef Name="Student_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SchoolDBModelStoreContainer">
+          <EntitySet Name="TB_CLASSES" EntityType="Self.TB_CLASSES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_ENROLLMENTS" EntityType="Self.TB_ENROLLMENTS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_STUDENTS" EntityType="Self.TB_STUDENTS" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Class" Association="Self.FK_Class">
+            <End Role="TB_CLASSES" EntitySet="TB_CLASSES" />
+            <End Role="TB_ENROLLMENTS" EntitySet="TB_ENROLLMENTS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student" Association="Self.FK_Student">
+            <End Role="TB_STUDENTS" EntitySet="TB_STUDENTS" />
+            <End Role="TB_ENROLLMENTS" EntitySet="TB_ENROLLMENTS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SchoolDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TB_CLASSES">
+          <Key>
+            <PropertyRef Name="Class_Id" />
+          </Key>
+          <Property Name="Class_Id" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TB_ENROLLMENTS" Relationship="Self.FK_Class" FromRole="TB_CLASSES" ToRole="TB_ENROLLMENTS" />
+        </EntityType>
+        <EntityType Name="TB_ENROLLMENTS">
+          <Key>
+            <PropertyRef Name="Enrollment_Id" />
+          </Key>
+          <Property Name="Enrollment_Id" Type="Int32" Nullable="false" />
+          <Property Name="Student_Id" Type="Int32" />
+          <Property Name="Class_Id" Type="Int32" />
+          <NavigationProperty Name="TB_CLASSES" Relationship="Self.FK_Class" FromRole="TB_ENROLLMENTS" ToRole="TB_CLASSES" />
+          <NavigationProperty Name="TB_STUDENTS" Relationship="Self.FK_Student" FromRole="TB_ENROLLMENTS" ToRole="TB_STUDENTS" />
+        </EntityType>
+        <EntityType Name="TB_STUDENTS">
+          <Key>
+            <PropertyRef Name="Student_Id" />
+          </Key>
+          <Property Name="Student_Id" Type="Int32" Nullable="false" />
+          <Property Name="Last_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="First_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TB_ENROLLMENTS" Relationship="Self.FK_Student" FromRole="TB_STUDENTS" ToRole="TB_ENROLLMENTS" />
+        </EntityType>
+        <Association Name="FK_Class">
+          <End Role="TB_CLASSES" Type="Self.TB_CLASSES" Multiplicity="0..1" />
+          <End Role="TB_ENROLLMENTS" Type="Self.TB_ENROLLMENTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_CLASSES">
+              <PropertyRef Name="Class_Id" />
+            </Principal>
+            <Dependent Role="TB_ENROLLMENTS">
+              <PropertyRef Name="Class_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student">
+          <End Role="TB_STUDENTS" Type="Self.TB_STUDENTS" Multiplicity="0..1" />
+          <End Role="TB_ENROLLMENTS" Type="Self.TB_ENROLLMENTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_STUDENTS">
+              <PropertyRef Name="Student_Id" />
+            </Principal>
+            <Dependent Role="TB_ENROLLMENTS">
+              <PropertyRef Name="Student_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SchoolDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TB_CLASSES" EntityType="Self.TB_CLASSES" />
+          <EntitySet Name="TB_ENROLLMENTS" EntityType="Self.TB_ENROLLMENTS" />
+          <EntitySet Name="TB_STUDENTS" EntityType="Self.TB_STUDENTS" />
+          <AssociationSet Name="FK_Class" Association="Self.FK_Class">
+            <End Role="TB_CLASSES" EntitySet="TB_CLASSES" />
+            <End Role="TB_ENROLLMENTS" EntitySet="TB_ENROLLMENTS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student" Association="Self.FK_Student">
+            <End Role="TB_STUDENTS" EntitySet="TB_STUDENTS" />
+            <End Role="TB_ENROLLMENTS" EntitySet="TB_ENROLLMENTS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SchoolDBModelStoreContainer" CdmEntityContainer="SchoolDBEntities">
+          <EntitySetMapping Name="TB_CLASSES">
+            <EntityTypeMapping TypeName="SchoolDBModel.TB_CLASSES">
+              <MappingFragment StoreEntitySet="TB_CLASSES">
+                <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_ENROLLMENTS">
+            <EntityTypeMapping TypeName="SchoolDBModel.TB_ENROLLMENTS">
+              <MappingFragment StoreEntitySet="TB_ENROLLMENTS">
+                <ScalarProperty Name="Enrollment_Id" ColumnName="Enrollment_Id" />
+                <ScalarProperty Name="Student_Id" ColumnName="Student_Id" />
+                <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_STUDENTS">
+            <EntityTypeMapping TypeName="SchoolDBModel.TB_STUDENTS">
+              <MappingFragment StoreEntitySet="TB_STUDENTS">
+                <ScalarProperty Name="Student_Id" ColumnName="Student_Id" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last_Name" />
+                <ScalarProperty Name="First_Name" ColumnName="First_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
